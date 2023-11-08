@@ -21,6 +21,9 @@
                 "17763.3650.221105",
                 "17763.3770.221211"
                 ]
+            "metadata": {
+                "Select a version of choice. These versions have vulnerabilities that now are fully pathced. These versions are not always avaiable, therefore you might need to select a different one"
+            }
         },
         // parmaters for Linux Server Name
         "linuxServerName": {
@@ -89,6 +92,8 @@
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
+                    "winServerName": { "value": "[parameters('winServerName')]" },
+                    "azureWinImageVersion": { "value": "[parameters('azureWinImageVersion')]" },
                     "adminUsername": { "value": "[parameters('adminUsername')]" },
                     "adminPassword": {"value": "[parameters('adminPassword')]"},
                     "virtualNetworkName": {"value": "[parameters('virtualNetworkName')]"},
@@ -109,6 +114,7 @@
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
+                    "linuxServerName": { "value": "[parameters('linuxServerName')]" },
                     "adminUsername": { "value": "[parameters('adminUsername')]" },
                     "adminPassword": {"value": "[parameters('adminPassword')]"},
                     "virtualNetworkName": {"value": "[parameters('virtualNetworkName')]"},
