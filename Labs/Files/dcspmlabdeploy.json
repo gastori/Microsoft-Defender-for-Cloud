@@ -10,6 +10,18 @@
                 "description": "Name for the Windows Server Virtual Machine."
             }
         },  
+        // parmaters for Windows Server Azure Image Version
+        "azureWinImageVersion": {
+            "type": "string",
+            "defaultValue": "17763.3406.220909",
+            "allowedValues": [
+                "17763.3406.220909",
+                "17763.3532.221008",
+                "17763.3534.221015",
+                "17763.3650.221105",
+                "17763.3770.221211"
+                ]
+        },
         // parmaters for Linux Server Name
         "linuxServerName": {
             "type": "string",
