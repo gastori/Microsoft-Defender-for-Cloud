@@ -92,8 +92,7 @@
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
-                    "winServerName": { "value": "[parameters('winServerName')]" },
-                    "azureWinImageVersion": { "value": "[parameters('azureWinImageVersion')]" },
+                    "linuxServerName": { "value": "[parameters('linuxServerName')]" },
                     "adminUsername": { "value": "[parameters('adminUsername')]" },
                     "adminPassword": {"value": "[parameters('adminPassword')]"},
                     "virtualNetworkName": {"value": "[parameters('virtualNetworkName')]"},
@@ -114,7 +113,8 @@
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
-                    "linuxServerName": { "value": "[parameters('linuxServerName')]" },
+                    "winServerName": { "value": "[parameters('winServerName')]" },
+                    "azureWinImageVersion": { "value": "[parameters('azureWinImageVersion')]" },
                     "adminUsername": { "value": "[parameters('adminUsername')]" },
                     "adminPassword": {"value": "[parameters('adminPassword')]"},
                     "virtualNetworkName": {"value": "[parameters('virtualNetworkName')]"},
