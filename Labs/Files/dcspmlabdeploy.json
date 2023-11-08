@@ -17,7 +17,7 @@
                 "description": "Name for the Linux Server Virtual Machine."
             }
         },
-        //parmaeters for user name
+        //parmeters for user name
         "adminUsername": {
             "type": "string",
             "metadata": {
