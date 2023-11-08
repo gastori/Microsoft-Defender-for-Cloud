@@ -3,13 +3,6 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         //relicate the parameters of the nested templates here
-        //parmaeters for user name
-        "adminUsername": {
-            "type": "string",
-            "metadata": {
-                "description": "User name for the Virtual Machine."
-            }
-        },  
         // parmaters for Windows Server Name
         "winServerName": {
             "type": "string",
@@ -24,6 +17,13 @@
                 "description": "Name for the Linux Server Virtual Machine."
             }
         },
+        //parmaeters for user name
+        "adminUsername": {
+            "type": "string",
+            "metadata": {
+                "description": "User name for the Virtual Machine."
+            }
+        },  
         // parameters for password
         "adminPassword": {
             "type": "securestring",
