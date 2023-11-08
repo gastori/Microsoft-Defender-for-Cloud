@@ -12,6 +12,9 @@
         },  
         // parmaters for Windows Server Azure Image Version
         "azureWinImageVersion": {
+            "metadata": {
+                "Select a version of choice. These versions have vulnerabilities that now are fully pathced. These versions are not always avaiable, therefore you might need to select a different one"
+            },
             "type": "string",
             "defaultValue": "17763.3406.220909",
             "allowedValues": [
@@ -20,10 +23,7 @@
                 "17763.3534.221015",
                 "17763.3650.221105",
                 "17763.3770.221211"
-                ],
-            "metadata": {
-                "Select a version of choice. These versions have vulnerabilities that now are fully pathced. These versions are not always avaiable, therefore you might need to select a different one"
-            }
+                ]
         },
         // parmaters for Linux Server Name
         "linuxServerName": {
