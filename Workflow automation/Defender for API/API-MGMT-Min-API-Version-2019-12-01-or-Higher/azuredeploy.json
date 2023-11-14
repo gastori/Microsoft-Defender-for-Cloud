@@ -13,22 +13,18 @@
         ],
         "tags":  [
         ],
-        "support":  {
-            "tier":  "community",
-            "armtemplate":  "Generated from https://github.com/Azure/Azure-Sentinel/tree/master/Tools/Playbook-ARM-Template-Generator"
-        },
         "author":  {
-            "name":  ""
+            "name":  "Giulio Astori  - Microsoft"
         }
     },
     "parameters":  {
-        "PlaybookName":  {
+        "LogicAppName":  {
             "defaultValue":  "rec-api-mgt-min-api-ver-2019-12-01-higher",
             "type":  "string"
         }
     },
     "variables":  {
-        "AscassessmentConnectionName":  "[concat('Ascassessment-', parameters('PlaybookName'))]"
+        "AscassessmentConnectionName":  "[concat('Ascassessment-', parameters('LogicAppName'))]"
     },
     "resources":  [
         {
@@ -158,15 +154,15 @@
                     }
                 }
             },
-            "name":  "[parameters('PlaybookName')]",
+            "name":  "[parameters('LogicAppName')]",
             "type":  "Microsoft.Logic/workflows",
             "location":  "[resourceGroup().location]",
             "identity":  {
                 "type":  "SystemAssigned"
             },
             "tags":  {
-                "hidden-SentinelTemplateName":  "rec-api-mgt-min-api-ver-2019-12-01-higher",
-                "hidden-SentinelTemplateVersion":  "1.0"
+                "LogicAppName":  "rec-api-mgt-min-api-ver-2019-12-01-higher",
+                "ogicAppVersion":  "1.0"
             },
             "apiVersion":  "2017-07-01",
             "dependsOn":  [
