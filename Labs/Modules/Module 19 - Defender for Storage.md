@@ -28,6 +28,7 @@ In these exercises, you will learn how to enable Defender for Storage and levera
 - [Exercise 9: Set up "Send Scan Results to Log Analytics" and Read It](https://github.com/Azure/Microsoft-Defender-for-Cloud/blob/main/Labs/Modules/Module%2019%20-%20Defender%20for%20Storage.md#-exercise-9-set-up-send-scan-results-to-log-analytics-and-read-it)
 - [Exercise 10: Function App Based on Event Grid Events](https://github.com/Azure/Microsoft-Defender-for-Cloud/blob/main/Labs/Modules/Module%2019%20-%20Defender%20for%20Storage.md#%EF%B8%8F-exercise-10-function-app-based-on-event-grid-events)
 - [Exercise 11: ABAC for users not to read malicious files](https://github.com/Azure/Microsoft-Defender-for-Cloud/blob/main/Labs/Modules/Module%2019%20-%20Defender%20for%20Storage.md#%EF%B8%8F-exercise-11-abac-for-users-not-to-read-malicious-files)
+- [Exercise 12: Configure and Test On-Demand Malware Scanning](https://github.com/Azure/Microsoft-Defender-for-Cloud/blob/main/Labs/Modules/Module%2019%20-%20Defender%20for%20Storage.md#-exercise-12-test-on-demand-malware-scanning)
 - [Appendix: Grant Storage Blob Data Owner to a User in a Storage Account Container](https://github.com/Azure/Microsoft-Defender-for-Cloud/blob/main/Labs/Modules/Module%2019%20-%20Defender%20for%20Storage.md#-appendix)
 
 
@@ -269,7 +270,7 @@ In this exercise we will use an Azure Function App based on Event Grid events. T
 4. In the **Azure portal** create a Function App. In this example, we will have a .NET code that moves malicious files once they are scanned and found with malware. It will be in the same resource group as my Event-Grid. 
 ![Function App creation](../Images/functionapp1.png?raw=true)
 
-5. In the **Defender for Storage documentation**, you will find a code template [MoveMaliciousBlobEventTrigger.](https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-storage-configure-malware-scan#option-2-function-app-based-on-event-grid-events) Copy the code. 
+5. In the **Defender for Storage documentation**, you will find a code template [MoveMaliciousBlobEventTrigger.](https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-storage-configure-malware-scan#option-2-function-app-based-on-event-grid-events) Copy the code. **Note:** The code was updated after this lab instructions. You will have to edit the value "InterestedContainer" to the container where you want to apply the Function App.
 
 6. Open **Visual Studio Code** in your computer and create a new function. Use **CTRL + Shift + P** to display the quick menu and look for **Azure Functions: Create Function...**
 ![Function App code](../Images/codefunctionapp1.png?raw=true)
@@ -303,7 +304,7 @@ In this exercise we will use an Azure Function App based on Event Grid events. T
 15. Input the name of one of your storage account containers, solely for the purpose to fill this section. 
 ![Function App code](../Images/codefunctionapp13.png?raw=true)
 
-16. In this newly created project, paste - in the MoveMaliciousBlob.cs file - the code found in the Defender for Storage documentation called [MoveMaliciousBlobEventTrigger.](https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-storage-configure-malware-scan#option-2-function-app-based-on-event-grid-events)
+16. In this newly created project, paste - in the MoveMaliciousBlob.cs file - the code found in the Defender for Storage documentation called [MoveMaliciousBlobEventTrigger.](https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-storage-configure-malware-scan#option-2-function-app-based-on-event-grid-events) **Note:** The code was updated after this lab instructions. You will have to edit the value **InterestedContainer** = "YourContainerName" to the container where you want to apply the Function App; all files that are uploaded there and have the Malicious tag, will be moved to a new container (also defined in this code).
 ![Function App code](../Images/codefunctionapp14.png?raw=true)
 
 17. [Optional] Download and install .NET 6.0 SDK so that you can run the code. https://dotnet.microsoft.com/en-us/download/dotnet/6.0 After you do that, close and re-open Visual Studio Code so that changes are applied. 
@@ -477,6 +478,99 @@ To make sure that your apps and users can only read non-malicious files, which m
 
 18. Then, in your **Storage Account container** you would have to change your authentication method to **Azure AD User Account** Active Directory
 ![ABAC](../Images/abac21.png?raw=true)
+
+## 🎮 Exercise 12: Test On-demand Malware Scanning
+### Enablement
+> **_NOTE:_**  To enable On-demand Malware Scanning, it is a prerequisite to have On-Upload Malware Scanning ON.
+1. Go to your storage account
+2. Navigate in the left menu to Microsoft Defender for Cloud
+![priortoondemand](../Images/priortoondemand.png)
+3. Click **Settings** to open the side menu
+![settingsmenu](../Images/settingsmenu.png)
+4. Enable On-upload malware scanning and click **Save**
+![enableonupload](../Images/enableonupload.png)
+5. The On-demand Malware Scanning menu will appear as soon as the settings are applied
+![overviewOnDemand](../Images/overviewondemand.png)
+> **_NOTE:_**  The estimate is based on metrics which are updated every few hours, so if the storage account was previously empty, it can show a wrong estimate (size + cost) until the next update.
+
+### Testing it via UI
+The On-demand Malware Scanning shows the total number of GBs of your storage account blobs. It also displays the total estimated cost of running the scan across all of those blobs. 
+
+1. If you enabled this in a storage account that already has blobs, click the button **Scan blobs for malware**
+![scanblobs](../Images/scanblobs.png)
+
+2. Once you click it, the scanning status will appear
+![scaninprogress](../Images/scaninprogress.png)
+
+> **_NOTE:_**  Scan cancellation is possible before the scan is in "Waiting for completion" state.
+![cancel](../Images/cancel.png)
+
+### Testing it via API
+[Download](https://github.com/Azure/Microsoft-Defender-for-Cloud/blob/main/Labs/Files/On_Demand_Insomnia_2024-10-14.yaml) our Insomnia collection that has the following APIs:
+- Get Scan
+- Start Scan
+- Cancel Scan
+
+#### Prerequisites
+- [Download](https://github.com/Azure/Microsoft-Defender-for-Cloud/blob/main/Labs/Files/On_Demand_Insomnia_2024-10-14.yaml) API collection 
+- Install Insomnia
+- Import the downloaded template
+- Have your Azure Bearer Token for the subscription where you want to use On-demand malware scanning
+
+#### Get Bearer Token
+1. Open your terminal
+2. Put it PowerShell mode and enter **Connect-AzAccount**
+![connectazaccount](../Images/connectazaccount.png)
+3. Once connected, enter:
+```PowerShell
+    (Get-AzAccessToken -ResourceUrl "https://management.azure.com").Token
+```
+![getaccesstoken](../Images/getaccesstoken.png)
+4. Copy it and paste it in the Auth tab in Insomnia
+
+
+#### Start Scan
+1. Go to **Start Scan** 
+![startoverview](../Images/startoverview.png) 
+2. Navigate to **Auth** and choose **Bearer Token**
+![bearertoken](../Images/bearertoken.png)
+3. Paste your Bearer Token
+4. Modify the following parameters in your POST request:
+    1. endpoint - **management.azure.com**
+    2. subscriptionId - **your sub id**
+    3. resourceGroup - **the resource group name where you have your storage account**
+    4. settingsName - **current**
+    5. apiVersion - **2024-10-01-preview**
+    
+    
+    > **_Sample:_** https://**management.azure.com**/subscriptions/**ab00cde1-ab00-1234-0ab1-0a123b456c78**/resourceGroups/**universe**/providers/Microsoft.Storage/storageAccounts/**storageaccount1234**/providers/Microsoft.Security/defenderForStorageSettings/**current**/StartMalwareScan?api-version=**2024-10-01-preview**
+
+    ![endpointenvironmentvariable](../Images/endpointenvironmentvariable.png)
+   6. Click **Send** 
+   7. The result will appear on the right section
+   ![modifiedparams](../Images/modifiedparams.png)
+
+#### Get Scan
+1. Go to **Get Scan**
+2. Navigate to **Auth** and choose **Bearer Token**
+3. Modify the parameters in your GET request
+```
+https://{{endpoint}}/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.Storage/storageAccounts/{{storageAccountName}}/providers/Microsoft.Security/defenderForStorageSettings/{{settingsName}}/startMalwareScan?api-version=2024-10-01-preview
+```
+6. Click **Send**. The scan status will be "WaitingForCompletion"
+![waitingforscan](../Images/waitingforscan.png)
+7. The result will appear on the right section. Click **Send** again and the scan status will change "Completed"
+   ![resultstartscan](../Images/resultgetscan.png)
+
+#### Cancel Scan
+1. Go to **Cancel Scan**
+2. Navigate to **Auth** and choose **Bearer Token**
+3. Modify the parameters in your POST request
+```
+https://{{endpoint}}/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.Storage/storageAccounts/{{storageAccountName}}/providers/Microsoft.Security/defenderForStorageSettings/{{settingsName}}/malwareScans/latest/cancelMalwareScan?api-version=2024-10-01-preview
+```
+6. Click **Send** 
+7. The result will appear on the right section
 
 # 🦉 Appendix
 ## Grant Storage Blob Data Owner to a user in a Storage Account Container
